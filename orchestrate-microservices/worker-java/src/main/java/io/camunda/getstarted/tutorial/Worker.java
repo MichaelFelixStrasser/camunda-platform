@@ -22,9 +22,10 @@ public class Worker {
   public static void main(String[] args) {
     SpringApplication.run(Worker.class, args);
   }
+
   
-      @JobWorker(type = "orchestrate-something")
-      public Map<String, Object> orchestrateSomething(final ActivatedJob job) {
+  @JobWorker(type = "orchestrate-something")
+        public Map<String, Object> orchestrateSomething(final ActivatedJob job) {
 
           // Do the business logic
           System.out.println("Yeah, now you can orchestrate something :-) You could use data from the process variables: " + job.getVariables());
@@ -75,56 +76,27 @@ public class Worker {
 
     @JobWorker(type = "get_business_data")
     public HashMap<String,String> get_business_relationship(final ActivatedJob job){
+
       HashMap<String,String> return_values = new HashMap<>();
 
-        // get variables for price calculation
-        Map<String, Object> incomingVariables = job.getVariablesAsMap();
-        String business_name = (String) incomingVariables.get("business_name");
+      // get variables for price calculation
+      Map<String, Object> incomingVariables = job.getVariablesAsMap();
+      String business_name = (String) incomingVariables.get("business_name");
 
-        //get relationship status relativ to business_name from database
-        Connection connection =null;
-        Statement statement;
-        String value_relationship = null;
-        String value_size = null;
+      //get relationship status relativ to business_name from database
+      try
+      {
+          GetBusinessDataFromSQLite getBusinessData = new GetBusinessDataFromSQLite();
+          return_values = getBusinessData.getBusinessSizeAndRelationship(business_name);
 
-
-        try
-        {
-            // establish connection
-            connection = DriverManager.getConnection("jdbc:sqlite:Database/BusinessRelationship.db");
-            statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            //make query
-            String sql_query = "SELECT * " +
-                    "           FROM business_relationship" +
-                    "           WHERE business_name = '"+business_name+"'";
-
-            ResultSet result = statement.executeQuery(sql_query);
-            value_relationship = result.getString("relationship_status");
-            value_size = result.getString("business_size");
-        }
-        catch( SQLException e)
-        {
-            System.err.println(e);
-        }
-        finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            }
-                catch(SQLException e){
-                    System.err.println(e);
-                }
-        }
-
-
-
-      return_values.put("business_relationship", value_relationship);
-      return_values.put("business_size", value_size);
-      return return_values;
       }
+      catch( SQLException e)
+      {
+          System.err.println(e);
+      }
+
+      return return_values;
+  }
 
     @JobWorker(type = "createTicket")
     public void createTicket(final ActivatedJob job){
