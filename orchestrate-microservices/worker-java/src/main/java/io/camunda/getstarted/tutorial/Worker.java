@@ -40,7 +40,7 @@ public class Worker {
       public Map<String, Object> calcPrize(final ActivatedJob job) {
 
             // Do the business logic
-            System.out.println("Yeah, now you can orchestrate something :-) You could use data from the process variables: " + job.getVariables());
+            System.out.println("Calculate Prize");
 
             // get variables for price calculation
             Map<String, Object> incomingVariables = job.getVariablesAsMap();
@@ -82,7 +82,7 @@ public class Worker {
       // get variables for price calculation
       Map<String, Object> incomingVariables = job.getVariablesAsMap();
       String business_name = (String) incomingVariables.get("business_name");
-
+      System.out.println(business_name);
       //get relationship status relativ to business_name from database
       try
       {
@@ -94,7 +94,7 @@ public class Worker {
       {
           System.err.println(e);
       }
-
+      System.out.println(return_values);
       return return_values;
   }
 
