@@ -20,9 +20,9 @@ import org.json.JSONObject;
 
 public class JiraCreateTicket {
     public static void main(String[] args) throws Exception {
-        HttpClient httpClient = createHttpClient();
+        //ttpClient httpClient = createHttpClient();
 
-        HttpPost request = new HttpPost("https://hsrtbpt2022.atlassian.net/rest/api/2/issue");
+       // HttpPost request = new HttpPost("https://hsrtbpt2022.atlassian.net/rest/api/2/issue");
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("fields", new JSONObject()
@@ -31,7 +31,10 @@ public class JiraCreateTicket {
                 .put("description", "This describes a test - Ticket")
                 .put("issuetype", new JSONObject().put("name", "Task"))
         );
-        StringEntity entity = new StringEntity(requestBody.toString());
+
+        JSONObject testjson = new JSONObject();
+        testjson.put("title", "title text");
+       /* StringEntity entity = new StringEntity(requestBody.toString());
         request.setEntity(entity);
         request.setHeader("Accept", "application/json");
         request.setHeader("Content-type", "application/json");
@@ -45,7 +48,10 @@ public class JiraCreateTicket {
         String issueKey = responseBody.getString("key");
         String issueId = responseBody.getString("id");
 
-        System.out.println("Issue created with key: " + issueKey + " and id: " + issueId);
+        System.out.println("Issue created with key: " + issueKey + " and id: " + issueId);*/
+        System.out.println(testjson);
+        String titletext = testjson.getString("title");
+        System.out.println(titletext);
     }
 
     private static HttpClient createHttpClient() {

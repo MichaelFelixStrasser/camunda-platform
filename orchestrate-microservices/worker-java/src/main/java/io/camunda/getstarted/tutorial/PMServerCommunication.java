@@ -1,5 +1,7 @@
 package io.camunda.getstarted.tutorial;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,13 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 
-// API Key : D044SpRo:mwZ0hDsYxTBTmEaPx4Hcn
-// Board ID : BDfEIJgO
-// Column ID : 63dd3b27667e56001ae32fe4
+
 
 
 public class PMServerCommunication {
-    public void createTicket(String title) throws IOException {
+    public int createTicket(String title) throws IOException {
         URL url = new URL("https://0bc864a1-f147-499e-94bd-d61d5cd44ade.mock.pstmn.io/issue");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
@@ -31,16 +31,19 @@ public class PMServerCommunication {
         //connection.setRequestProperty("Authorization", "Bearer "+ apiKey);
 
 
+        JSONObject payload = new JSONObject();
+        JSONObject jsonResponse = null;
+        payload.put("title", title);
 
-        String payload = "{}";
         OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        writer.write(payload);
+        writer.write(payload.toString());
         writer.close();
 
         int responseCode = connection.getResponseCode();
         System.out.println("Response code: " + responseCode);
 
         StringBuilder response = new StringBuilder();
+
         if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -48,13 +51,19 @@ public class PMServerCommunication {
                 response.append(line);
             }
             reader.close();
+            jsonResponse = new JSONObject(response.toString());
             System.out.println("Response JSON: " + response.toString());
         } else {
             System.out.println("Request failed");
         }
 
+        System.out.println(jsonResponse);
+
+        int ticketId = jsonResponse.getInt("ticketId");
+        System.out.println(ticketId);
 
 
+        return ticketId;
     }
 
     public void deleteTicket() throws IOException {

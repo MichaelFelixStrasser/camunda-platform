@@ -12,6 +12,7 @@ import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.EnableZeebeClient;
 import io.camunda.zeebe.spring.client.annotation.ZeebeWorker;
+import scala.Int;
 
 import java.sql.*;
 
@@ -91,17 +92,22 @@ public class Worker {
   }
 
     @JobWorker(type = "createTicket")
-    public void createTicket(final ActivatedJob job){
+    public HashMap<String, Integer> createTicket(final ActivatedJob job){
+      // intialize
+      HashMap<String, Integer> return_value = new HashMap<>();
       PMServerCommunication pmscomm = new PMServerCommunication();
       // get variables for price calculation
       Map<String, Object> incomingVariables = job.getVariablesAsMap();
       String title = (String) incomingVariables.get("feature_request_text");
       int ticketId = 0;
       try {
-              pmscomm.createTicket(title);
+             ticketId =  pmscomm.createTicket(title);
           } catch (IOException e) {
               e.printStackTrace();
           }
+
+      return_value.put("ticketId", ticketId);
+      return return_value;
       }
 
     @JobWorker(type = "deleteTicket")
