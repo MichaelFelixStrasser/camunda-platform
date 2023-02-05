@@ -29,7 +29,7 @@ public class GetBusinessDataFromSQLite implements GetBusinessDataFromDB {
         value_relationship = result.getString("relationship_status");
         value_size = result.getString("business_size");
 
-        businessClassification.put("relationship_status" , value_relationship);
+        businessClassification.put("business_relationship" , value_relationship);
         businessClassification.put("business_size" , value_size);
 
         if (connection != null) {

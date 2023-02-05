@@ -18,7 +18,7 @@ import java.util.Base64;
 
 
 public class PMServerCommunication {
-    public void createTicket() throws IOException {
+    public void createTicket(String title) throws IOException {
         URL url = new URL("https://0bc864a1-f147-499e-94bd-d61d5cd44ade.mock.pstmn.io/issue");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
@@ -52,6 +52,9 @@ public class PMServerCommunication {
         } else {
             System.out.println("Request failed");
         }
+
+
+
     }
 
     public void deleteTicket() throws IOException {
