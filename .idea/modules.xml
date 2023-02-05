@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/camunda-platform.iml" filepath="$PROJECT_DIR$/.idea/camunda-platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/orchestrate-microservices/worker-java/part1-spring-boot-worker.iml" filepath="$PROJECT_DIR$/orchestrate-microservices/worker-java/part1-spring-boot-worker.iml" />
+    </modules>
+  </component>
+</project>
